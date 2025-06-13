@@ -1,8 +1,8 @@
 import fs from "fs";
 import path from "path";
 import nodemailer from "nodemailer";
-import { Employee } from "./Employee";
-import { OurDate } from "./OurDate";
+import { Employee } from "../dominio/Employee";
+import { OurDate } from "../dominio/OurDate";
 import Mail from "nodemailer/lib/mailer";
 import SMTPTransport from "nodemailer/lib/smtp-transport";
 
@@ -14,7 +14,7 @@ export class BirthdayService {
     smtpPort: number
   ) {
     const data = fs.readFileSync(
-      path.resolve(__dirname, `../resources/${fileName}`),
+      path.resolve(__dirname, `../../resources/${fileName}`),
       "UTF-8"
     );
 
