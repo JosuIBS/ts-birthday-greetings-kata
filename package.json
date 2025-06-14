@@ -29,6 +29,7 @@
   },
   "dependencies": {
     "@types/nodemailer": "^6.4.0",
+    "bun": "^1.2.16",
     "nodemailer": "^6.4.16"
   }
 }
