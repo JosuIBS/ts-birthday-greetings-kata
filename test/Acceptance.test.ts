@@ -2,7 +2,7 @@ import { OurDate } from "../src/dominio/OurDate";
 import { BirthdayService } from "../src/aplicacion/BirthdayService";
 import { messagesSent, startMailhog, stopMailHog } from "./mailhog";
 import flushPromises from "flush-promises";
-import { FileEmployeeRepository } from "src/infraestructura/TransformBirthdayList";
+import { FileEmployeeRepository } from "src/infraestructura/EmployeeBirthdayList";
 
 describe("Acceptance", () => {
   const SMTP_PORT = 1025;

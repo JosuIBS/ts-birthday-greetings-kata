@@ -2,21 +2,24 @@ import fs from "fs";
 import path from "path";
 import { Employee } from "src/dominio/Employee";
 import { EmployeeRepository } from "src/dominio/EmployeeRepository";
+import { OurDate } from "src/dominio/OurDate";
 
 export class FileEmployeeRepository implements EmployeeRepository {
-  listEmployees(fileName: string) {
+  listEmployeesByBirthday(fileName: string, ourDate: OurDate) {
     const lines = transformTxtToArray(fileName);
 
-    return lines.map((line) => {
-      const employeeData = line.split(", ");
-      const employee = new Employee(
-        employeeData[1],
-        employeeData[0],
-        employeeData[2],
-        employeeData[3]
-      );
-      return employee;
-    });
+    return lines
+      .map((line) => {
+        const employeeData = line.split(", ");
+        const employee = new Employee(
+          employeeData[1],
+          employeeData[0],
+          employeeData[2],
+          employeeData[3]
+        );
+        return employee;
+      })
+      .filter((employee) => employee.isBirthday(ourDate));
   }
 }
 const transformTxtToArray = (fileName: string) => {

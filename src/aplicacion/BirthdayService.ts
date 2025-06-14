@@ -1,9 +1,9 @@
-import nodemailer from "nodemailer";
 import { Employee } from "../dominio/Employee";
 import { OurDate } from "../dominio/OurDate";
+import { EmployeeRepository } from "src/dominio/EmployeeRepository";
 import Mail from "nodemailer/lib/mailer";
 import SMTPTransport from "nodemailer/lib/smtp-transport";
-import { EmployeeRepository } from "src/dominio/EmployeeRepository";
+import nodemailer from "nodemailer";
 
 export class BirthdayService {
   constructor(private employeeRepository: EmployeeRepository) {}
@@ -14,7 +14,10 @@ export class BirthdayService {
     smtpHost: string,
     smtpPort: number
   ) {
-    const employees = this.employeeRepository.listEmployees(fileName);
+    const employees = this.employeeRepository.listEmployeesByBirthday(
+      fileName,
+      ourDate
+    );
     // print all lines
     employees.forEach((employee) => {
       this.greetBirthday(employee, ourDate, smtpHost, smtpPort);
