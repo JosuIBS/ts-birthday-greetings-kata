@@ -1,41 +1,22 @@
-import fs from "fs";
-import path from "path";
 import nodemailer from "nodemailer";
 import { Employee } from "../dominio/Employee";
 import { OurDate } from "../dominio/OurDate";
 import Mail from "nodemailer/lib/mailer";
 import SMTPTransport from "nodemailer/lib/smtp-transport";
-
-const transformTxtToArray = (fileName: string) => {
-  const dataFromTxt = fs.readFileSync(
-    path.resolve(__dirname, `../../resources/${fileName}`),
-    "UTF-8"
-  );
-  // split the contents by new line
-  const divideDataToLines = dataFromTxt.split(/\r?\n/);
-
-  divideDataToLines.shift();
-
-  return divideDataToLines;
-};
+import { EmployeeRepository } from "src/dominio/EmployeeRepository";
 
 export class BirthdayService {
+  constructor(private employeeRepository: EmployeeRepository) {}
+
   sendGreetings(
     fileName: string,
     ourDate: OurDate,
     smtpHost: string,
     smtpPort: number
   ) {
-    const lines = transformTxtToArray(fileName);
+    const employees = this.employeeRepository.listEmployees(fileName);
     // print all lines
-    lines.forEach((line) => {
-      const employeeData = line.split(", ");
-      const employee = new Employee(
-        employeeData[1],
-        employeeData[0],
-        employeeData[2],
-        employeeData[3]
-      );
+    employees.forEach((employee) => {
       this.greetBirthday(employee, ourDate, smtpHost, smtpPort);
     });
   }
