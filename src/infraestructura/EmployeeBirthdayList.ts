@@ -5,8 +5,9 @@ import { EmployeeRepository } from "src/dominio/EmployeeRepository";
 import { OurDate } from "src/dominio/OurDate";
 
 export class FileEmployeeRepository implements EmployeeRepository {
-  listEmployeesByBirthday(fileName: string, ourDate: OurDate) {
-    const lines = transformTxtToArray(fileName);
+  constructor(private fileName: string) {}
+  listEmployeesByBirthday(ourDate: OurDate) {
+    const lines = transformTxtToArray(this.fileName);
 
     return lines
       .map((line) => {
@@ -22,6 +23,7 @@ export class FileEmployeeRepository implements EmployeeRepository {
       .filter((employee) => employee.isBirthday(ourDate));
   }
 }
+
 const transformTxtToArray = (fileName: string) => {
   const dataFromTxt = fs.readFileSync(
     path.resolve(__dirname, `../../resources/${fileName}`),

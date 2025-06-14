@@ -8,28 +8,15 @@ import nodemailer from "nodemailer";
 export class BirthdayService {
   constructor(private employeeRepository: EmployeeRepository) {}
 
-  sendGreetings(
-    fileName: string,
-    ourDate: OurDate,
-    smtpHost: string,
-    smtpPort: number
-  ) {
-    const employees = this.employeeRepository.listEmployeesByBirthday(
-      fileName,
-      ourDate
-    );
+  sendGreetings(ourDate: OurDate, smtpHost: string, smtpPort: number) {
+    const employees = this.employeeRepository.listEmployeesByBirthday(ourDate);
     // print all lines
     employees.forEach((employee) => {
-      this.greetBirthday(employee, ourDate, smtpHost, smtpPort);
+      this.greetBirthday(employee, smtpHost, smtpPort);
     });
   }
 
-  greetBirthday = (
-    employee: Employee,
-    ourDate: OurDate,
-    smtpHost: string,
-    smtpPort: number
-  ) => {
+  greetBirthday = (employee: Employee, smtpHost: string, smtpPort: number) => {
     const recipient = employee.getEmail();
     const body = "Happy Birthday, dear %NAME%!".replace(
       "%NAME%",
