@@ -1,18 +1,32 @@
 import { Employee } from "../dominio/Employee";
 import { OurDate } from "../dominio/OurDate";
 import { EmployeeRepository } from "src/dominio/EmployeeRepository";
-import Mail from "nodemailer/lib/mailer";
+import NodeMailerMail from "nodemailer/lib/mailer";
 import SMTPTransport from "nodemailer/lib/smtp-transport";
 import nodemailer from "nodemailer";
+import { MailingRepository } from "src/dominio/MailingRepository";
+import { Mail } from "src/dominio/Mail";
 
 export class BirthdayService {
-  constructor(private employeeRepository: EmployeeRepository) {}
+  constructor(
+    private employeeRepository: EmployeeRepository,
+    private mailingRepository: MailingRepository
+  ) {}
 
-  sendGreetings(ourDate: OurDate, smtpHost: string, smtpPort: number) {
+  sendGreetings(ourDate: OurDate) {
     const employees = this.employeeRepository.listEmployeesByBirthday(ourDate);
     // print all lines
     employees.forEach((employee) => {
-      this.greetBirthday(employee, smtpHost, smtpPort);
+      const mail: Mail = {
+        recipient: "recipient@here.com",
+        body: "Happy Birthday, dear %NAME%!".replace(
+          "%NAME%",
+          employee.getFirstName()
+        ),
+        subject: "Happy Birthday!",
+        sender: "sender@here.com",
+      };
+      this.mailingRepository.send(mail);
     });
   }
 
@@ -60,4 +74,6 @@ export class BirthdayService {
   }
 }
 
-export interface Message extends SMTPTransport.Options, Mail.Options {}
+export interface Message
+  extends SMTPTransport.Options,
+    NodeMailerMail.Options {}
