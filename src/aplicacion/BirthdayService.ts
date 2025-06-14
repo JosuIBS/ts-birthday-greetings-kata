@@ -30,22 +30,20 @@ export class BirthdayService {
     smtpHost: string,
     smtpPort: number
   ) => {
-    if (employee.isBirthday(ourDate)) {
-      const recipient = employee.getEmail();
-      const body = "Happy Birthday, dear %NAME%!".replace(
-        "%NAME%",
-        employee.getFirstName()
-      );
-      const subject = "Happy Birthday!";
-      this.sendMessage(
-        smtpHost,
-        smtpPort,
-        "sender@here.com",
-        subject,
-        body,
-        recipient
-      );
-    }
+    const recipient = employee.getEmail();
+    const body = "Happy Birthday, dear %NAME%!".replace(
+      "%NAME%",
+      employee.getFirstName()
+    );
+    const subject = "Happy Birthday!";
+    this.sendMessage(
+      smtpHost,
+      smtpPort,
+      "sender@here.com",
+      subject,
+      body,
+      recipient
+    );
   };
   async sendMessage(
     smtpHost: string,
